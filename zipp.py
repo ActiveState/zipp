@@ -52,9 +52,14 @@ def _ancestry(path):
     ['b']
     >>> list(_ancestry(''))
     []
+
+    Multiple separators are treated like a single.
+
+    >>> list(_ancestry('//b//d///f//'))
+    ['//b//d///f', '//b//d', '//b']
     """
     path = path.rstrip(posixpath.sep)
-    while path and path != posixpath.sep:
+    while path and not path.endswith(posixpath.sep):
         yield path
         path, tail = posixpath.split(path)
 

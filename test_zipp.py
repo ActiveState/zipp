@@ -240,6 +240,23 @@ class TestPath(unittest.TestCase):
         assert entries.count == self.HUGE_ZIPFILE_NUM_ENTRIES
 
     @func_timeout.func_set_timeout(3)
+    def test_malformed_paths(self):
+        """
+        Path must not hang on malformed member names (CVE-2024-5569:
+        '//two-slash.txt' sent _ancestry into an infinite loop). Upstream
+        leaves the exact listing of such names unspecified
+        (python/cpython#123270), so only termination is asserted.
+        """
+        data = io.BytesIO()
+        zf = zipfile.ZipFile(data, "w")
+        zf.writestr("/one-slash.txt", b"content")
+        zf.writestr("//two-slash.txt", b"content")
+        zf.writestr("../parent.txt", b"content")
+        zf.filename = ''
+        root = zipp.Path(zf)
+        consume(root.iterdir())
+
+    @func_timeout.func_set_timeout(3)
     def test_implied_dirs_performance(self):
         data = ['/'.join(string.ascii_lowercase + str(n)) for n in range(10000)]
         zipp.CompleteDirs._implied_dirs(data)

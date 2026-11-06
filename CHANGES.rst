@@ -1,3 +1,16 @@
+v1.2.0.post1
+============
+
+ActiveState security release for Python 2.7.
+
+CVE-2024-5569 (GHSA-jfmj-5v4g-7637): a zip file whose member names
+begin with more than one slash no longer sends ``Path`` into an
+infinite loop. Backport of upstream's fix (jaraco/zipp f89b93f, 3.20.1),
+which superseded the name sanitizing of 3.19.1; member names are not
+rewritten.
+
+The version is now static; setuptools_scm is no longer needed to build.
+
 v1.2.0
 ======
 
