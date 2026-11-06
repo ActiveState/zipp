@@ -1,3 +1,15 @@
+v1.2.0.post1
+============
+
+ActiveState security release for Python 2.7.
+
+CVE-2024-5569 (GHSA-jfmj-5v4g-7637): a zip file whose member names
+contain doubled separators no longer sends ``Path`` into an infinite
+loop. Member names are sanitized (drive letters, backslashes, empty,
+``.`` and ``..`` segments removed), as in upstream 3.19.1.
+
+The version is now static; setuptools_scm is no longer needed to build.
+
 v1.2.0
 ======
 
